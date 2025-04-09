@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom"; // Removed BrowserRouter import here
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "./component/Navbar";
 import Home from "./pages/Home";
@@ -9,18 +9,18 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Doctors from "./pages/Doctors";
-import EditProfile from "./pages/EditProfile";
-import Language from "./pages/Language";
-import ChangePassword from "./pages/ChangePassword";
+import EditProfile from "./component/EditProfile";
+import Language from "./component/Language";
+import ChangePassword from "./component/ChangePassword";
 import NotFound from "./component/NotFound";
-import MyPatient from "./component/MyPatient";
+import MyPatient from "./pages/MyPatient";
 import Footer from "./component/Footer";
 import CaseFile from "./component/CaseFile";
-import { fetchUserProfile } from "./redux/authSlice"; // Import fetchUserProfile action
-import DoctorProfile from "./pages/DoctorProfile";
-import PatientProfile from "./pages/PatientProfile";
-import "./App.css"; // Import global styles (optional, but good practice)
+import DoctorProfile from "./component/DoctorProfile";
+import PatientProfile from "./pages/AnalyzeSkin";
+import { fetchUserProfile } from "./redux/authSlice";
 import ViewCaseFile from "./component/ViewCaseFile";
+import "./App.css";
 
 function App() {
     const dispatch = useDispatch();
@@ -28,7 +28,6 @@ function App() {
     const location = useLocation();
 
     useEffect(() => {
-        // Check for token on app load and fetch user profile
         if (localStorage.getItem("token") && !isAuthenticated && !loading) {
             dispatch(fetchUserProfile());
         }
@@ -36,10 +35,8 @@ function App() {
 
     return (
         <div className="app-container">
-            {/* Use a dedicated container for App */}
             <Navbar />
             <main className="main-content">
-                {/* Use <main> for semantic content */}
                 <Routes>
                     <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/about" element={<About />} />
@@ -49,17 +46,17 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/my-patients" element={<MyPatient />} />
-                    <Route path=":doctorId" element={<DoctorProfile />} />{" "}
-                    <Route path="/viewCaseFile/:patientId" element={<ViewCaseFile />} /> {/* The new route for ViewCaseFile */}
-
-                    {/* New route for doctor profile */}
+                    <Route path=":doctorId" element={<DoctorProfile />} />
+                    <Route
+                        path="/viewCaseFile/:patientId"
+                        element={<ViewCaseFile />}
+                    />
                     <Route
                         path="/patient-profile"
                         element={<PatientProfile />}
                     />
-                    {/* Protected Routes */}
                     <Route
-                        path="/profile/*" // Match any route starting with /profile
+                        path="/profile/*"
                         element={
                             isAuthenticated ? (
                                 <Profile />
@@ -78,19 +75,13 @@ function App() {
                             element={<ChangePassword />}
                         />
                         <Route path="language" element={<Language />} />
-                        <Route path="caseFile" element={<CaseFile />} />{" "}
-                        {/* CaseFile route without parameter */}
-                        <Route
-                            path="my-patients"
-                            element={<MyPatient />}
-                        />{" "}
-                        {/* Adjusted path - consider nesting under /profile if it makes sense */}
-                        {/* Sidebar will be integrated into the Profile component */}
+                        <Route path="caseFile" element={<CaseFile />} />
+                        <Route path="my-patients" element={<MyPatient />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </main>
-            {isAuthenticated && <Footer />} {/* Conditionally render Footer */}
+            {isAuthenticated && <Footer />}
         </div>
     );
 }

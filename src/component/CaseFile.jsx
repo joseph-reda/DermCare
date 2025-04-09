@@ -1,14 +1,13 @@
 import React from "react";
-import { FaTimes } from "react-icons/fa"; // Import the close icon
+import { FaTimes } from "react-icons/fa";
 
 import case1 from "../assets/images/skin1.jpeg";
 import case2 from "../assets/images/skin2.jpeg";
 
 const CaseFile = () => {
-    // Simulate fetching case data (replace with your actual data fetching logic)
     const [caseData, setCaseData] = React.useState([
         {
-            id: 1, // Added a unique ID for each case
+            id: 1,
             title: "Possible Eczema on Forearm",
             date: "2025-04-07",
             description:
@@ -17,7 +16,7 @@ const CaseFile = () => {
             images: [case1],
         },
         {
-            id: 2, // Added a unique ID for each case
+            id: 2,
             title: "Suspected Psoriasis on Elbow",
             date: "2024-01-09",
             description:
@@ -25,11 +24,9 @@ const CaseFile = () => {
             diagnosis: "Likely Psoriasis",
             images: [case2],
         },
-        // Add more case data here
     ]);
 
     const handleDeleteCase = (caseId) => {
-        // In a real application, you would likely make an API call to delete the case
         console.log(`Deleting case with ID: ${caseId}`);
         setCaseData(caseData.filter((caseItem) => caseItem.id !== caseId));
     };

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser } from "../redux/authSlice"; // Assuming you have a logout action
+import { logoutUser } from "../redux/authSlice";
 
 const Sidebar = () => {
     const { user } = useSelector((state) => state.auth);
@@ -15,7 +15,7 @@ const Sidebar = () => {
 
     const handleConfirmLogout = () => {
         dispatch(logoutUser());
-        navigate("/login"); // Redirect to login page after logout
+        navigate("/login");
         setShowLogoutConfirmation(false);
     };
 
@@ -34,7 +34,7 @@ const Sidebar = () => {
                             isActive ? "bg-gray-200 font-semibold" : ""
                         }`
                     }
-                    end // Ensures it matches only the exact path
+                    end
                 >
                     My Profile
                 </NavLink>
@@ -101,7 +101,7 @@ const Sidebar = () => {
             </nav>
 
             {showLogoutConfirmation && (
-                <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="fixed z-50 top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
                     <div className="bg-white w-[350px] h-[160px] rounded-md shadow-md p-6">
                         <h3 className="text-lg font-semibold mb-4">
                             Are you sure you want to logout?
@@ -114,7 +114,7 @@ const Sidebar = () => {
                                 Cancel
                             </button>
                             <button
-                                onClick={handleConfirmLogout} // Use handleConfirmLogout here
+                                onClick={handleConfirmLogout}
                                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-5 w-[180px] rounded focus:outline-none focus:shadow-outline"
                             >
                                 Logout

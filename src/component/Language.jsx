@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { setLanguage } from "../redux/languageSlice"; // Correct import
+import { setLanguage } from "../redux/languageSlice";
 
 const Language = () => {
     const [selectedLanguage, setSelectedLanguage] = useState("");
@@ -22,7 +22,7 @@ const Language = () => {
         if (user && user.language) {
             setSelectedLanguage(user.language);
         } else {
-            setSelectedLanguage(currentLanguage); // Use Redux state as default
+            setSelectedLanguage(currentLanguage);
         }
     }, [user, currentLanguage]);
 
@@ -39,8 +39,6 @@ const Language = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(setLanguage(selectedLanguage));
-        // If you need to update the backend, dispatch another action here
-        // e.g., dispatch(updateUserLanguage({ language: selectedLanguage }));
     };
 
     return (
@@ -87,7 +85,6 @@ const Language = () => {
                             >
                                 <option value="en">English</option>
                                 <option value="ar">العربية</option>
-                                {/* Add more language options as needed */}
                             </select>
                         </div>
                         <button

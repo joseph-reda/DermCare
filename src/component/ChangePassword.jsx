@@ -27,7 +27,7 @@ const ChangePassword = () => {
     useEffect(() => {
         if (changePasswordSuccess) {
             alert("Password changed successfully!");
-            navigate("/profile"); // Redirect after successful password change
+            navigate("/profile");
         }
 
         return () => {

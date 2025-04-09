@@ -29,7 +29,6 @@ const dummyDoctors = [
         specialty: "Surgical Dermatology",
         location: "Aswan",
     },
-    // Add more dummy doctors here
 ];
 
 const Doctors = () => {
@@ -104,11 +103,11 @@ const Doctors = () => {
                             <p className="text-gray-600 mb-3">
                                 <span className="font-semibold">
                                     Specialty:
-                                </span>{" "}
+                                </span>
                                 {doctor.specialty}
                             </p>
                             <p className="text-gray-600 mb-4">
-                                <span className="font-semibold">Location:</span>{" "}
+                                <span className="font-semibold">Location:</span>
                                 {doctor.location}
                             </p>
                             <Link

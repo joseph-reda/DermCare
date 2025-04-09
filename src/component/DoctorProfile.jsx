@@ -5,9 +5,7 @@ import {
     FaGraduationCap,
     FaBriefcase,
     FaCheckCircle,
-} from "react-icons/fa"; // More relevant icons
-
-// Dummy function to fetch doctor data by ID (replace with your API call)
+} from "react-icons/fa";
 const fetchDoctorById = (id) => {
     // Simulate fetching from an API
     return new Promise((resolve) => {
@@ -80,7 +78,7 @@ const fetchDoctorById = (id) => {
                 // Add data for other doctors based on their IDs
             };
             resolve(doctorData[parseInt(id)]);
-        }, 500); // Simulate API delay
+        }, 500);
     });
 };
 
@@ -138,7 +136,7 @@ const DoctorProfile = () => {
                         <img
                             src={image}
                             alt={name}
-                            className="w-full h-64 object-cover" // Cover the top section with the image
+                            className="w-full h-64 object-cover"
                         />
                         <div className="absolute bottom-0 left-0 bg-blue-600 bg-opacity-75 text-white w-full p-4">
                             <h2 className="text-xl font-semibold">{name}</h2>

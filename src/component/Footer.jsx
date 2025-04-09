@@ -6,7 +6,6 @@ const Footer = () => {
         <footer className="bg-gray-800 text-white py-8">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {/* First Column: Company Info */}
                     <div>
                         <h3 className="text-lg font-semibold mb-4">Derma Scan</h3>
                         <p className="text-gray-400 text-sm">
@@ -17,7 +16,6 @@ const Footer = () => {
                         </p>
                     </div>
 
-                    {/* Second Column: Quick Links */}
                     <div>
                         <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
                         <ul className="text-gray-400 text-sm space-y-2">
@@ -41,11 +39,9 @@ const Footer = () => {
                                     Find a Doctor
                                 </Link>
                             </li>
-                            {/* Add more quick links as needed */}
                         </ul>
                     </div>
 
-                    {/* Third Column: Contact & Social */}
                     <div>
                         <h3 className="text-lg font-semibold mb-4">Contact & Social</h3>
                         <p className="text-gray-400 text-sm mb-2">
@@ -55,24 +51,19 @@ const Footer = () => {
                             Phone: +20 123 456 7890
                         </p>
                         <div className="flex space-x-4 mt-4">
-                            {/* Add your social media icons and links here */}
                             <a href="#" className="hover:text-white">
-                                {/* Example: <i className="fab fa-facebook-f"></i> */}
                                 Facebook
                             </a>
                             <a href="#" className="hover:text-white">
-                                {/* Example: <i className="fab fa-twitter"></i> */}
                                 Twitter
                             </a>
                             <a href="#" className="hover:text-white">
-                                {/* Example: <i className="fab fa-linkedin-in"></i> */}
                                 LinkedIn
                             </a>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Copyright Section */}
                 <div className="mt-8 border-t border-gray-700 py-4 text-center text-gray-400 text-xs">
                     &copy; {new Date().getFullYear()} Derma Scan. All rights reserved.
                     <Link to="/privacy" className="hover:text-white ml-4">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PatientProfile = () => {
+const AnalyzeSkin = () => {
     const [selectedImages, setSelectedImages] = useState([]);
     const [imagePreviewUrls, setImagePreviewUrls] = useState([]);
     const [analysisResult, setAnalysisResult] = useState(null);
@@ -55,15 +55,12 @@ const PatientProfile = () => {
         setAnalysisError(null);
 
         try {
-            // Simulate API call for image upload and analysis of multiple images
             console.log("Uploading and analyzing images:", selectedImages);
             await new Promise(resolve => setTimeout(resolve, 3000)); // Simulate longer analysis
 
-            // Simulate analysis result for multiple images
             const dummyResult = {
                 title: "Combined Skin Analysis",
                 description: "Analysis of the uploaded images suggests potential areas of concern. Further examination by a dermatologist is recommended for a comprehensive evaluation.",
-                // You might have more detailed results per image in a real scenario
             };
             setAnalysisResult(dummyResult);
         } catch (error) {
@@ -86,7 +83,6 @@ const PatientProfile = () => {
     return (
         <div className="bg-gray-100 min-h-screen py-8">
             <div className="container mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col md:flex-row">
-                {/* Image Area */}
                 <div className="md:w-1/2 pr-4 mb-4 md:mb-0">
                     <h3 className="text-lg font-semibold text-gray-800 mb-3">Uploaded Images</h3>
                     {imagePreviewUrls.length > 0 ? (
@@ -122,7 +118,6 @@ const PatientProfile = () => {
                     {uploadError && <p className="text-red-500 text-xs italic mt-1">{uploadError}</p>}
                 </div>
 
-                {/* Analysis Area */}
                 <div className="md:w-1/2 pl-4">
                     <h3 className="text-lg font-semibold text-gray-800 mb-3">Analysis</h3>
                     {analysisResult ? (
@@ -131,7 +126,6 @@ const PatientProfile = () => {
                                 {analysisResult.title}
                             </h4>
                             <p className="text-gray-700 mb-4">{analysisResult.description}</p>
-                            {/* Add more detailed analysis results here if needed */}
                         </div>
                     ) : (
                         <div className="bg-gray-100 rounded-md p-4 text-gray-600 italic">
@@ -170,4 +164,4 @@ const PatientProfile = () => {
     );
 };
 
-export default PatientProfile;
+export default AnalyzeSkin;

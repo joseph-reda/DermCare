@@ -1,25 +1,44 @@
-// src/redux/authSlice.jsx
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Simulate a list of doctor credentials for testing
+// Doctor fake data
 const doctorsCredentials = [
-    { email: "doctor1@example.com", password: "password1", name: "Dr. First Doctor", role: "doctor", specialty: "General Dermatology", location: "Cairo" },
-    { email: "doctor2@example.com", password: "password2", name: "Dr. Second Doctor", role: "doctor", specialty: "Cosmetic Dermatology", location: "Alexandria" },
-    // Add more test doctor accounts as needed
+    {
+        email: "doctor1@example.com",
+        password: "password1",
+        name: "Dr. First Doctor",
+        role: "doctor",
+        specialty: "General Dermatology",
+        location: "Cairo",
+    },
+    {
+        email: "doctor2@example.com",
+        password: "password2",
+        name: "Dr. Second Doctor",
+        role: "doctor",
+        specialty: "Cosmetic Dermatology",
+        location: "Alexandria",
+    },
 ];
-
-// Simulate a list of patient credentials for testing (you'll need this)
+// Patient fake data
 const patientsCredentials = [
-    { email: "patient1@example.com", password: "passwordA", name: "Patient One", role: "patient" },
-    { email: "patient2@example.com", password: "passwordB", name: "Patient Two", role: "patient" },
-    // Add more test patient accounts as needed
+    {
+        email: "patient1@example.com",
+        password: "passwordA",
+        name: "Patient One",
+        role: "patient",
+    },
+    {
+        email: "patient2@example.com",
+        password: "passwordB",
+        name: "Patient Two",
+        role: "patient",
+    },
 ];
 
-// Async Thunk for User Registration (Simulated - remains the same for now)
-// Async Thunk for User Registration (Simulated)
+// Async Thunk Registration
 export const registerUser = createAsyncThunk(
     "auth/register",
-    async (userData, { rejectWithValue, dispatch }) => {
+    async (userData, { rejectWithValue }) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         if (
             !userData.email ||
@@ -31,11 +50,12 @@ export const registerUser = createAsyncThunk(
                 "Please fill in all required fields, including role."
             );
         }
+        // Create fake user
         const tempUser = {
             id: Math.random().toString(36).substring(7),
             name: userData.name,
             email: userData.email,
-            role: userData.role, // Use the role from the registration data
+            role: userData.role,
         };
         const tempToken =
             "DUMMY_TOKEN_" + Math.random().toString(36).substring(7);
@@ -44,58 +64,76 @@ export const registerUser = createAsyncThunk(
     }
 );
 
-
-// Async Thunk for Login (Simulated - now includes doctor profile data)
+// Async Thunk for Login
 export const loginUser = createAsyncThunk(
     "auth/login",
     async (credentials, { rejectWithValue }) => {
-        await new Promise(resolve => setTimeout(resolve, 800)); // Simulate login delay
+        await new Promise((resolve) => setTimeout(resolve, 800)); // Simulate login delay
 
         const foundDoctor = doctorsCredentials.find(
-            (doctor) => doctor.email === credentials.email && doctor.password === credentials.password
+            (doctor) =>
+                doctor.email === credentials.email &&
+                doctor.password === credentials.password
         );
 
         if (foundDoctor) {
-            const tempToken = "DOCTOR_TOKEN_" + Math.random().toString(36).substring(7);
+            const tempToken =
+                "DOCTOR_TOKEN_" + Math.random().toString(36).substring(7);
             localStorage.setItem("token", tempToken);
-            return { user: { id: Math.random().toString(36).substring(7), ...foundDoctor }, token: tempToken };
+            return {
+                user: {
+                    id: Math.random().toString(36).substring(7),
+                    ...foundDoctor,
+                },
+                token: tempToken,
+            };
         }
 
         const foundPatient = patientsCredentials.find(
-            (patient) => patient.email === credentials.email && patient.password === credentials.password
+            (patient) =>
+                patient.email === credentials.email &&
+                patient.password === credentials.password
         );
 
         if (foundPatient) {
-            const tempToken = "PATIENT_TOKEN_" + Math.random().toString(36).substring(7);
+            const tempToken =
+                "PATIENT_TOKEN_" + Math.random().toString(36).substring(7);
             localStorage.setItem("token", tempToken);
-            return { user: { id: Math.random().toString(36).substring(7), ...foundPatient }, token: tempToken };
+            return {
+                user: {
+                    id: Math.random().toString(36).substring(7),
+                    ...foundPatient,
+                },
+                token: tempToken,
+            };
         }
 
-        return rejectWithValue("Invalid credentials.");
+        return rejectWithValue("Invalid credentials"); // More specific error message
     }
 );
 
-// Async Thunk to Fetch User Profile (Simulated to return the logged-in user)
 export const fetchUserProfile = createAsyncThunk(
     "auth/fetchProfile",
     async (_, { getState, rejectWithValue }) => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            return rejectWithValue("No token found");
-        }
         const state = getState();
         if (state.auth.user) {
             return state.auth.user;
         }
-        return rejectWithValue("No user data available.");
+        const token = localStorage.getItem("token");
+        if (token) {
+            return rejectWithValue(
+                "No user data in store, consider re-logging."
+            );
+        }
+        return rejectWithValue("Not authenticated.");
     }
 );
 
-// Async Thunk to Update User Profile (Simulated)
+// Async Thunk Update User Profile (Fake update)
 export const updateUserProfile = createAsyncThunk(
     "auth/updateProfile",
     async (updatedData, { getState, rejectWithValue }) => {
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
         const state = getState();
         if (state.auth.user) {
             return { ...state.auth.user, ...updatedData };
@@ -104,12 +142,12 @@ export const updateUserProfile = createAsyncThunk(
     }
 );
 
-// Async Thunk to Change Password (Simulated)
+// Async Thunk Change Password
 export const changePassword = createAsyncThunk(
     "auth/changePassword",
     async ({ oldPassword, newPassword }, { getState, rejectWithValue }) => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return { message: "Password changed successfully (simulated)." };
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        return { message: "Password changed successfully." };
     }
 );
 
@@ -142,9 +180,17 @@ const authSlice = createSlice({
             state.changePasswordError = null;
             state.changePasswordSuccess = false;
         },
+        setUser: (state, action) => {
+            state.user = action.payload;
+            state.isAuthenticated = true;
+        },
+        setToken: (state, action) => {
+            state.token = action.payload;
+            state.isAuthenticated = true;
+        },
     },
     extraReducers: (builder) => {
-        // Register User Cases (Simulated)
+        // Register User
         builder.addCase(registerUser.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -160,7 +206,7 @@ const authSlice = createSlice({
             state.error = action.payload;
         });
 
-        // Login Cases (Simulated - now handles both doctor and patient)
+        // Login
         builder.addCase(loginUser.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -176,7 +222,7 @@ const authSlice = createSlice({
             state.error = action.payload;
         });
 
-        // Fetch User Profile Cases (Simulated)
+        // Fetch User Profile
         builder.addCase(fetchUserProfile.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -192,9 +238,10 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.user = null;
             state.token = null;
+            localStorage.removeItem("token");
         });
 
-        // Update User Profile Cases (Simulated)
+        // Update User Profile
         builder.addCase(updateUserProfile.pending, (state) => {
             state.updateProfileLoading = true;
             state.updateProfileError = null;
@@ -211,7 +258,7 @@ const authSlice = createSlice({
             state.updateProfileSuccess = false;
         });
 
-        // Change Password Cases (Simulated)
+        // Change Password
         builder.addCase(changePassword.pending, (state) => {
             state.changePasswordLoading = true;
             state.changePasswordError = null;
@@ -229,6 +276,6 @@ const authSlice = createSlice({
     },
 });
 
-export const { logoutUser, clearError } = authSlice.actions;
+export const { logoutUser, clearError, setUser, setToken } = authSlice.actions;
 
 export default authSlice.reducer;

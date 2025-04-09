@@ -8,7 +8,7 @@ const Signup = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("patient"); // New state for role
+    const [role, setRole] = useState("patient");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loading, error, isAuthenticated } = useSelector(
@@ -22,11 +22,11 @@ const Signup = () => {
 
     useLayoutEffect(() => {
         if (isAuthenticated) {
-            navigate("/home"); // Redirect to home page after successful signup
+            navigate("/home");
         }
 
         return () => {
-            dispatch(clearError()); // Clear any previous errors on component unmount
+            dispatch(clearError());
         };
     }, [isAuthenticated, navigate, dispatch]);
 
@@ -77,7 +77,6 @@ const Signup = () => {
                         />
                     </div>
 
-                    {/* Role Selection */}
                     <div className="flex justify-between items-center mt-4">
                         <label className="text-gray-700 font-semibold">
                             Account Type:
@@ -102,7 +101,7 @@ const Signup = () => {
                 </form>
 
                 <p className="text-sm text-center mt-4">
-                    Already have an account?{" "}
+                    Already have an account?
                     <a href="/login" className="text-blue-500 hover:underline">
                         Login
                     </a>

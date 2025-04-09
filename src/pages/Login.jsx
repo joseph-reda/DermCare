@@ -18,11 +18,11 @@ const Login = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate("/home"); // Redirect to home page after successful login
+            navigate("/home");
         }
 
         return () => {
-            dispatch(clearError()); // Clear any previous errors on component unmount
+            dispatch(clearError());
         };
     }, [isAuthenticated, navigate, dispatch]);
 
@@ -65,7 +65,7 @@ const Login = () => {
                 </form>
 
                 <p className="text-sm text-center mt-4">
-                    Don't have an account?{" "}
+                    Don't have an account?
                     <a href="/signup" className="text-blue-500 hover:underline">Sign Up</a>
                 </p>
             </div>

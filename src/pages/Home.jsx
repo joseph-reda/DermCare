@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Home = () => {
-    const { isAuthenticated, user } = useSelector((state) => state.auth); // Access the user object
+    const { isAuthenticated, user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
     return (
@@ -76,7 +76,6 @@ const Home = () => {
                         </div>
                         <div>
                             <div className="bg-yellow-100 text-yellow-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                {/* Replace with an icon */}
                                 <svg
                                     className="w-8 h-8 fill-current"
                                     viewBox="0 0 24 24"
@@ -94,7 +93,6 @@ const Home = () => {
                         </div>
                         <div>
                             <div className="bg-green-100 text-green-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                                {/* Replace with an icon */}
                                 <svg
                                     className="w-8 h-8 fill-current"
                                     viewBox="0 0 24 24"

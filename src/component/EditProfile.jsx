@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateUserProfile, clearError } from "../redux/authSlice";
-import { clearUserError } from "../redux/userSlice "; // If you have a userSlice
+import { clearUserError } from "../redux/userSlice ";
 
 const EditProfile = () => {
     const {
@@ -12,15 +12,14 @@ const EditProfile = () => {
         updateProfileError,
         updateProfileSuccess,
     } = useSelector((state) => state.auth);
-    const { error: userError } = useSelector((state) => state.user); // Get user slice error
+    const { error: userError } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [specialty, setSpecialty] = useState(""); // Doctor-specific
-    const [location, setLocation] = useState(""); // Doctor-specific
-    // Add more state for other fields
+    const [specialty, setSpecialty] = useState("");
+    const [location, setLocation] = useState("");
 
     useEffect(() => {
         if (user) {
@@ -30,7 +29,6 @@ const EditProfile = () => {
                 setSpecialty(user.specialty || "");
                 setLocation(user.location || "");
             }
-            // Populate other fields
         }
     }, [user]);
 
@@ -54,7 +52,6 @@ const EditProfile = () => {
             updatedProfileData.specialty = specialty;
             updatedProfileData.location = location;
         }
-        // Add other updated fields
         dispatch(updateUserProfile(updatedProfileData));
     };
 
@@ -158,8 +155,6 @@ const EditProfile = () => {
                                 </div>
                             </>
                         )}
-
-                        {/* Add more input fields for other profile information */}
 
                         <button
                             type="submit"

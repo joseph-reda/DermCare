@@ -10,9 +10,8 @@ const Contact = () => {
         e.preventDefault();
         setSubmissionStatus("loading");
 
-        // Simulate sending data to a backend (replace with your actual API call)
         try {
-            await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate network delay
+            await new Promise((resolve) => setTimeout(resolve, 1500));
             console.log("Form submitted:", { name, email, message });
             setName("");
             setEmail("");
@@ -131,11 +130,8 @@ const Contact = () => {
                         <p className="mb-2">
                             6th of October City, Giza Governorate, Egypt
                         </p>
-                        {/* You can embed a Google Maps iframe here if you like */}
-                        {/* <h3 className="mt-4 font-semibold">Call Us</h3>
-            <p className="mb-2">+20 123 456 7890</p> */}
                         <p className="mt-4">
-                            For urgent inquiries, please email us at{" "}
+                            For urgent inquiries, please email us at
                             <a
                                 href="mailto:info@dermascan.com"
                                 className="text-blue-500 hover:underline transition duration-300"

@@ -3,7 +3,6 @@ import { Link, Navigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
-// Dummy patient data (replace with your API fetch for the logged-in doctor)
 const dummyPatients = [
     {
         id: 101,
@@ -23,7 +22,6 @@ const dummyPatients = [
         lastVisit: "2025-04-04",
         condition: "Psoriasis",
     },
-    // Add more dummy patients here
 ];
 
 const MyPatient = () => {
@@ -33,21 +31,6 @@ const MyPatient = () => {
     const [filteredPatients, setFilteredPatients] = useState([]);
 
     useEffect(() => {
-        // In a real application, you would fetch the list of patients
-        // associated with the logged-in doctor from your backend API.
-        // You would likely need to send the doctor's ID or use the
-        // authentication token to identify the doctor.
-        // Example using fetch (replace with your actual endpoint):
-        // fetch('/api/doctors/me/patients', {
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem('token')}`,
-        //   },
-        // })
-        //   .then(response => response.json())
-        //   .then(data => setPatients(data))
-        //   .catch(error => console.error("Error fetching patients:", error));
-
-        // Using dummy data for now
         setPatients(dummyPatients);
         setFilteredPatients(dummyPatients);
     }, []);
@@ -68,7 +51,6 @@ const MyPatient = () => {
         setSearchTerm(event.target.value);
     };
 
-    // Conditionally render the component for doctors only
     if (!isAuthenticated || user?.role !== "doctor") {
         return <Navigate to="/login" replace />;
     }
@@ -124,7 +106,7 @@ const MyPatient = () => {
                                 </p>
                             )}
                             <Link
-                                to={`/viewCaseFile/${patient.id}`} // Ensure this route matches your App.js setup
+                                to={`/viewCaseFile/${patient.id}`}
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-auto focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                             >
                                 View Case File

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../component/Sidebar";
-import "./Profile.css"; // Import your profile-specific styles
+
+import { logoutUser } from "../redux/authSlice";
 
 const Profile = () => {
     const { user, loading, error } = useSelector((state) => state.auth);
@@ -10,9 +11,16 @@ const Profile = () => {
     const [showHeader, setShowHeader] = useState(true);
 
     useEffect(() => {
-        // Hide the main profile content when a nested route is active
         setShowHeader(location.pathname === "/profile");
     }, [location.pathname]);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleLogInOrSignup = () => {
+        dispatch(logoutUser());
+        navigate("/login");
+    };
+
     if (loading) {
         return (
             <div className="profile-container flex">
@@ -45,9 +53,28 @@ const Profile = () => {
         return (
             <div className="profile-container flex">
                 <Sidebar />
-                <div className="profile-content p-6 flex-grow text-red-500">
-                    Error loading profile:{" "}
-                    {error || "Could not load user profile. Please try again."}
+                <div className="profile-content p-6 flex-grow text-center my-auto">
+                    <div className="text-red-500 text-xl mb-4">
+                        Error loading profile:
+                        {error ||
+                            "Could not load user profile. Please try again."}
+                    </div>
+                    <div className="mt-10 text-xl">
+                        <Link
+                            to="/login"
+                            onClick={handleLogInOrSignup}
+                            className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-20 rounded focus:outline-none focus:shadow-outline mr-2"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            to="/signup"
+                            onClick={handleLogInOrSignup}
+                            className="inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-20 rounded focus:outline-none focus:shadow-outline"
+                        >
+                            Sign Up
+                        </Link>
+                    </div>
                 </div>
             </div>
         );
@@ -58,11 +85,11 @@ const Profile = () => {
             <Sidebar />
             <div className="profile-content flex-grow p-6 md:p-8 lg:p-10">
                 {showHeader && (
-                    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                    <div className="bg-white rounded-lg shadow-md p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <h2 className="text-xl font-semibold text-gray-800 mb-4 col-span-full">
                             Your Profile
                         </h2>
-                        <div className="mb-4">
+                        <div>
                             <strong className="block text-gray-700 mb-1">
                                 Full Name:
                             </strong>
@@ -70,7 +97,7 @@ const Profile = () => {
                                 {user.name || "Not available"}
                             </p>
                         </div>
-                        <div className="mb-4">
+                        <div>
                             <strong className="block text-gray-700 mb-1">
                                 Email:
                             </strong>
@@ -79,54 +106,50 @@ const Profile = () => {
                             </p>
                         </div>
                         {user.role && (
-                            <div className="mb-4">
+                            <div>
                                 <strong className="block text-gray-700 mb-1">
                                     Role:
                                 </strong>
                                 <p className="text-gray-800">{user.role}</p>
                             </div>
                         )}
-
+                        {user?.role === "doctor" && user.specialty && (
+                            <div>
+                                <strong className="block text-gray-700 mb-1">
+                                    Specialty:
+                                </strong>
+                                <p className="text-gray-800">
+                                    {user.specialty}
+                                </p>
+                            </div>
+                        )}
+                        {user?.role === "doctor" && user.location && (
+                            <div>
+                                <strong className="block text-gray-700 mb-1">
+                                    Location:
+                                </strong>
+                                <p className="text-gray-800">{user.location}</p>
+                            </div>
+                        )}
                         {user?.role === "doctor" && (
-                            <div className="mt-6 border-t pt-6">
-                                {user.specialty && (
-                                    <div className="mb-4">
-                                        <strong className="block text-gray-700 mb-1">
-                                            Specialty:
-                                        </strong>
-                                        <p className="text-gray-800">
-                                            {user.specialty}
-                                        </p>
-                                    </div>
-                                )}
-                                {user.location && (
-                                    <div className="mb-4">
-                                        <strong className="block text-gray-700 mb-1">
-                                            Location:
-                                        </strong>
-                                        <p className="text-gray-800">
-                                            {user.location}
-                                        </p>
-                                    </div>
-                                )}
+                            <div className="md:col-span-2 mt-6 border-t pt-6">
                                 <Link
                                     to="/my-patients"
-                                    className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+                                    className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 >
                                     View My Patients
                                 </Link>
                             </div>
                         )}
-
                         {user?.role === "patient" && (
-                            <div className="mt-6 border-t pt-6">
+                            <div className="md:col-span-2 mt-6 border-t pt-6">
                                 <p className="text-gray-600 mb-4">
                                     Welcome, Patient! You can browse doctors and
                                     manage your appointments here.
                                 </p>
                                 <Link
                                     to="/doctors"
-                                    className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+                                    className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 >
                                     Find a Doctor
                                 </Link>
@@ -134,7 +157,7 @@ const Profile = () => {
                         )}
                     </div>
                 )}
-                <Outlet /> {/* Render the content of the nested routes */}
+                <Outlet />
             </div>
         </div>
     );
