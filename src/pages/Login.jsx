@@ -9,7 +9,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
+    const { loading, error, user } = useSelector((state) => state.auth);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -17,14 +17,14 @@ const Login = () => {
     };
 
     useEffect(() => {
-        if (isAuthenticated) {
+        if (user) {
             navigate("/home");
         }
 
         return () => {
             dispatch(clearError());
         };
-    }, [isAuthenticated, navigate, dispatch]);
+    }, [user, navigate, dispatch]);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">

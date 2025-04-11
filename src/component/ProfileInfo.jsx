@@ -6,7 +6,10 @@ const ProfileInfo = () => {
     const { user } = useSelector((state) => state.auth);
 
     if (!user) {
-        return null;
+        return (
+            <div className=""> 
+            </div>
+        );
     }
 
     return (

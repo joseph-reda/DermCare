@@ -1,3 +1,4 @@
+// component/Navbar.js
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -86,7 +87,7 @@ const Navbar = () => {
                     >
                         Contact
                     </NavLink>
-                    {isAuthenticated && (
+                    {user && (
                         <NavLink
                             to="/profile"
                             className="flex items-center hover:opacity-80 transition duration-200"
@@ -98,7 +99,7 @@ const Navbar = () => {
                             />
                         </NavLink>
                     )}
-                    {!isAuthenticated && (
+                    {!user && (
                         <div className="space-x-3">
                             <NavLink
                                 to="/login"

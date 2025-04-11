@@ -7,7 +7,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="bg-gray-100 min-h-screen container mx-auto py-4">
+        <div className="min-h-screen container mx-auto py-4">
             <header className="bg-blue-500 text-white py-20 text-center">
                 <div className="container mx-auto px-4">
                     <h1 className="text-4xl font-bold mb-4">
@@ -19,22 +19,22 @@ const Home = () => {
                     <div className="flex justify-center space-x-4">
                         <Link
                             to="/about"
-                            className="bg-white text-blue-500 py-3 px-6 rounded-full font-semibold hover:bg-blue-100 transition duration-300"
+                            className="bg-white text-blue-500 py-3 px-6 rounded-sm text-[18px] font-semibold hover:bg-blue-100 transition duration-300"
                         >
                             Learn More
                         </Link>
-                        {!isAuthenticated && (
+                        {!user && (
                             <Link
                                 to="/login"
-                                className="bg-yellow-400 text-blue-800 py-3 px-6 rounded-full font-semibold hover:bg-yellow-300 transition duration-300"
+                                className="bg-yellow-400 text-gray-500 py-3 px-6 rounded-sm text-[18px] font-semibold hover:bg-yellow-300 transition duration-300"
                             >
-                                Login
+                                Login / Register
                             </Link>
                         )}
                         {isAuthenticated && user?.role === "patient" && (
                             <Link
                                 to="/doctors"
-                                className="bg-yellow-400 text-blue-800 py-3 px-6 rounded-full font-semibold hover:bg-yellow-300 transition duration-300"
+                                className="bg-yellow-400 text-gray-500 py-3 px-6 rounded-sm text-[18px] font-semibold hover:bg-yellow-300 transition duration-300"
                             >
                                 Find a Doctor
                             </Link>
@@ -42,7 +42,7 @@ const Home = () => {
                         {isAuthenticated && user?.role === "doctor" && (
                             <Link
                                 to="/my-patients"
-                                className="bg-green-400 text-white py-3 px-6 rounded-full font-semibold hover:bg-green-300 transition duration-300"
+                                className="bg-green-400 text-white py-3 px-6 rounded-sm text-[18px] font-semibold hover:bg-green-300 transition duration-300"
                             >
                                 My Patients
                             </Link>
@@ -139,11 +139,12 @@ const Home = () => {
                             Manage Your Patients
                         </h2>
                         <p className="text-lg text-gray-700 mb-8">
-                            View and manage the patients who are connected with you.
+                            View and manage the patients who are connected with
+                            you.
                         </p>
                         <Link
                             to="/my-patients"
-                            className="bg-green-500 text-white py-3 px-6 rounded-full font-semibold hover:bg-green-600 transition duration-300"
+                            className="bg-green-500 text-white text-[18px] py-4 px-6 rounded-sm font-semibold hover:bg-green-600 transition duration-300"
                         >
                             View My Patients
                         </Link>

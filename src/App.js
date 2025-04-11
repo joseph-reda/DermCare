@@ -24,7 +24,7 @@ import "./App.css";
 
 function App() {
     const dispatch = useDispatch();
-    const { isAuthenticated, loading } = useSelector((state) => state.auth);
+    const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
     const location = useLocation();
 
     useEffect(() => {
@@ -58,7 +58,7 @@ function App() {
                     <Route
                         path="/profile/*"
                         element={
-                            isAuthenticated ? (
+                            user ? (
                                 <Profile />
                             ) : (
                                 <Navigate
@@ -76,12 +76,15 @@ function App() {
                         />
                         <Route path="language" element={<Language />} />
                         <Route path="caseFile" element={<CaseFile />} />
-                        <Route path="my-patients" element={<MyPatient />} />
+                        <Route
+                            path="my-patients"
+                            element={<MyPatient />}
+                        />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </main>
-            {isAuthenticated && <Footer />}
+            {user && <Footer />}
         </div>
     );
 }
