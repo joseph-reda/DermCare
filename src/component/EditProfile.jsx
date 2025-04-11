@@ -56,7 +56,7 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="bg-gray-100 min-h-screen py-12">
+        <div className="min-h-screen py-12">
             <div className="container mx-auto px-6 md:px-12 lg:px-24">
                 <div className="bg-white rounded-lg shadow-md p-8 md:p-10 lg:p-12 max-w-lg mx-auto">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-6 tracking-tight">
