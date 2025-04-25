@@ -1,4 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+// Mock data for doctors (replace with actual data fetching)
+const mockDoctors = [
+    { id: "doctor1", name: "Dr. Alice Smith" },
+    { id: "doctor2", name: "Dr. Bob Johnson" },
+    { id: "doctor3", name: "Dr. Carol Williams" },
+];
 
 const AnalyzeSkin = () => {
     const [selectedImages, setSelectedImages] = useState([]);
@@ -8,6 +15,17 @@ const AnalyzeSkin = () => {
     const [analysisLoading, setAnalysisLoading] = useState(false);
     const [uploadError, setUploadError] = useState(null);
     const [analysisError, setAnalysisError] = useState(null);
+    const [showSendToDoctor, setShowSendToDoctor] = useState(false);  // Control visibility
+    const [selectedDoctor, setSelectedDoctor] = useState("");
+    const [sendToDoctorLoading, setSendToDoctorLoading] = useState(false);
+    const [sendToDoctorError, setSendToDoctorError] = useState(null);
+    const [sendToDoctorSuccess, setSendToDoctorSuccess] = useState(false);
+
+    // Clear messages
+    useEffect(() => {
+        setSendToDoctorError(null);
+        setSendToDoctorSuccess(false);
+    }, [selectedDoctor, analysisResult]);
 
     const handleImageChange = (event) => {
         const files = Array.from(event.target.files);
@@ -45,7 +63,7 @@ const AnalyzeSkin = () => {
 
     const handleUploadAndAnalyze = async () => {
         if (selectedImages.length === 0) {
-            alert("Please select at least one image.");
+            alert("Please select at least one image."); // Basic validation
             return;
         }
 
@@ -53,16 +71,19 @@ const AnalyzeSkin = () => {
         setAnalysisLoading(true);
         setUploadError(null);
         setAnalysisError(null);
+        setShowSendToDoctor(false); // Reset send to doctor state
 
         try {
             console.log("Uploading and analyzing images:", selectedImages);
-            await new Promise(resolve => setTimeout(resolve, 3000)); // Simulate longer analysis
+            await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate longer analysis
 
             const dummyResult = {
                 title: "Combined Skin Analysis",
-                description: "Analysis of the uploaded images suggests potential areas of concern. Further examination by a dermatologist is recommended for a comprehensive evaluation.",
+                description:
+                    "Analysis of the uploaded images suggests potential areas of concern. Further examination by a dermatologist is recommended for a comprehensive evaluation.",
             };
             setAnalysisResult(dummyResult);
+            setShowSendToDoctor(true); // Show button after successful analysis
         } catch (error) {
             console.error("Error during upload and analysis:", error);
             setAnalysisError("Failed to analyze images. Please try again.");
@@ -78,17 +99,55 @@ const AnalyzeSkin = () => {
         setAnalysisResult(null);
         setUploadError(null);
         setAnalysisError(null);
+        setShowSendToDoctor(false); // Also reset this state
+        setSelectedDoctor("");
+        setSendToDoctorError(null);
+        setSendToDoctorSuccess(false);
+    };
+
+    const handleSendToDoctor = async () => {
+        if (!selectedDoctor) {
+            setSendToDoctorError("Please select a doctor.");
+            return;
+        }
+        setSendToDoctorLoading(true);
+        setSendToDoctorError(null);
+        setSendToDoctorSuccess(false);
+
+        try {
+            // Simulate sending data
+            console.log(
+                "Sending analysis result to doctor:",
+                selectedDoctor,
+                analysisResult
+            );
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+
+            setSendToDoctorSuccess(true);
+        } catch (error) {
+            console.error("Failed to send result to doctor", error);
+            setSendToDoctorError(
+                "Failed to send analysis to the doctor. Please try again."
+            );
+        } finally {
+            setSendToDoctorLoading(false);
+        }
     };
 
     return (
         <div className="bg-gray-100 min-h-screen py-8">
-            <div className="container mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col md:flex-row">
-                <div className="md:w-1/2 pr-4 mb-4 md:mb-0">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3">Uploaded Images</h3>
+            <div className="container mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col md:flex-row gap-6">
+                <div className="md:w-1/2 ">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                        Uploaded Images
+                    </h3>
                     {imagePreviewUrls.length > 0 ? (
                         <div className="flex flex-wrap -mx-2">
                             {imagePreviewUrls.map((previewUrl, index) => (
-                                <div key={index} className="w-1/2 sm:w-1/3 md:w-1/2 lg:w-1/3 xl:w-1/4 px-2 mb-4 relative">
+                                <div
+                                    key={index}
+                                    className="w-1/2 sm:w-1/3 md:w-1/2 lg:w-1/3 xl:w-1/4 px-2 mb-4 relative"
+                                >
                                     <img
                                         src={previewUrl}
                                         alt={`Uploaded Skin ${index + 1}`}
@@ -96,7 +155,7 @@ const AnalyzeSkin = () => {
                                     />
                                     <button
                                         type="button"
-                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700 focus:outline-none focus:shadow-outline"
+                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700 focus:outline-none focus:shadow-outline"
                                         onClick={() => handleRemoveImage(index)}
                                     >
                                         X
@@ -110,18 +169,21 @@ const AnalyzeSkin = () => {
                         </div>
                     )}
                     <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 focus:outline-none focus:shadow-outline"
                         onClick={handleUploadAnotherImage}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 focus:outline-none focus:shadow-outline"
+
                     >
                         Clear Images
                     </button>
-                    {uploadError && <p className="text-red-500 text-xs italic mt-1">{uploadError}</p>}
+                    {uploadError && (
+                        <p className="text-red-500 text-xs italic mt-1">{uploadError}</p>
+                    )}
                 </div>
 
-                <div className="md:w-1/2 pl-4">
+                <div className="md:w-1/2 ">
                     <h3 className="text-lg font-semibold text-gray-800 mb-3">Analysis</h3>
                     {analysisResult ? (
-                        <div className="rounded-md shadow-md p-4 bg-gray-100">
+                        <div className="rounded-md shadow-md p-4 bg-gray-100 mb-4">
                             <h4 className="text-xl font-semibold text-blue-700 mb-2">
                                 {analysisResult.title}
                             </h4>
@@ -133,7 +195,7 @@ const AnalyzeSkin = () => {
                         </div>
                     )}
 
-                    <div className="mt-4">
+                    <div className="mb-4">
                         <label
                             htmlFor="imageUpload"
                             className="block text-gray-700 text-sm font-bold mb-2"
@@ -143,21 +205,78 @@ const AnalyzeSkin = () => {
                         <input
                             type="file"
                             id="imageUpload"
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             onChange={handleImageChange}
                             accept="image/*"
                             multiple
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+
                         />
                     </div>
 
                     <button
-                        className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 focus:outline-none focus:shadow-outline ${uploading || analysisLoading || selectedImages.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                         onClick={handleUploadAndAnalyze}
-                        disabled={selectedImages.length === 0 || uploading || analysisLoading}
+                        disabled={
+                            selectedImages.length === 0 || uploading || analysisLoading
+                        }
+                        className={`w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 focus:outline-none focus:shadow-outline ${
+                            uploading || analysisLoading || selectedImages.length === 0
+                                ? "opacity-50 cursor-not-allowed"
+                                : ""
+                        }`}
                     >
-                        {uploading ? 'Uploading...' : (analysisLoading ? 'Analyzing...' : 'Analyze Images')}
+                        {uploading
+                            ? "Uploading..."
+                            : analysisLoading
+                            ? "Analyzing..."
+                            : "Analyze Images"}
                     </button>
-                    {analysisError && <p className="text-red-500 mt-2 text-xs italic">{analysisError}</p>}
+                    {analysisError && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
+                            <strong className="font-bold">Error: </strong>
+                            <span className="block sm:inline">{analysisError}</span>
+                        </div>
+                    )}
+
+                    {/* Send to Doctor Section */}
+                    {showSendToDoctor && analysisResult && (
+                        <div className="mt-6">
+                            <h4 className="text-md font-semibold text-gray-800 mb-3">
+                                Send Results to Doctor
+                            </h4>
+                            <select
+                                onChange={(e) => setSelectedDoctor(e.target.value)}
+                                value={selectedDoctor}
+                                disabled={sendToDoctorLoading}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+
+                            >
+                                <option value="">Select a doctor</option>
+                                {mockDoctors.map((doctor) => (
+                                    <option key={doctor.id} value={doctor.id}>
+                                        {doctor.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {sendToDoctorError && (
+                                <p className="text-red-500 text-xs italic mt-2">
+                                    {sendToDoctorError}
+                                </p>
+                            )}
+                            {sendToDoctorSuccess && (
+                                <p className="text-green-500 text-sm mt-2">
+                                    Analysis sent to doctor successfully!
+                                </p>
+                            )}
+                            <button
+                                onClick={handleSendToDoctor}
+                                disabled={sendToDoctorLoading || !selectedDoctor}
+                                className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 focus:outline-none focus:shadow-outline"
+
+                            >
+                                {sendToDoctorLoading ? "Sending..." : "Send to Doctor"}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
